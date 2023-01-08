@@ -15,21 +15,22 @@ const testobj = {
 }
 ```
 
-### Method 1: UpdatePath
+### UpdatePath
 
 ```js
-updatePath("some..books[?(@.price >= 1)]", testobj, (node) => {
-	const newValue = update(node.value, { price: { $addTax: 0.2 } })
-	node.parent[node.parentProperty] = newValue
+extend("$addTax", function (tax, original) {
+	return original + tax * original
+})
+
+const changed = updatePath("some..books[?(@.price >= 1)]", testobj, {
+	price: { $addTax: 0.2 },
 })
 ```
 
-### Method 2: Generate a transaction
+### Compose commands
 
 ```js
-const diff = transaction(testobj, [
-	["some..books[?(@.price >= 1)]", { price: { $addTax: 0.2 } }]
-])
-
-const updated = update(testobj, diff)
+extend("$addTaxAll", (tax, object) =>
+	updatePath("*.*.books[?(@.price >= 1)]", object, { price: { $addTax: tax } })
+)
 ```
