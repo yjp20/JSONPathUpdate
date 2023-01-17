@@ -13,7 +13,7 @@ const obj = {
 			books: [
 				{
 					name: "moby",
-                    type: "luxury",
+					type: "luxury",
 					price: 3,
 				},
 			],
@@ -34,9 +34,9 @@ Like `immutability-helper`'s `update`, you can optionally pass a function to cha
 
 ```js
 const changedObj = updatePath(obj, "some..books[?(@.price >= 1)]", (obj) => {
-    return {
-        price: { $addTax: obj.type == "luxury" ? 0.3 : 0.2 },
-    }
+	return {
+		price: { $addTax: obj.type == "luxury" ? 0.3 : 0.2 },
+	}
 })
 ```
 
